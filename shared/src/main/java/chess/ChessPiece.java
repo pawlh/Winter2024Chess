@@ -1,5 +1,7 @@
 package chess;
 
+import chess.ruleset.*;
+
 import java.util.Collection;
 
 /**
@@ -10,34 +12,56 @@ import java.util.Collection;
  */
 public class ChessPiece {
 
-    public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
+    private final ChessGame.TeamColor teamColor;
+
+    private final PieceType pieceType;
+
+
+    public ChessPiece(ChessGame.TeamColor pieceColor, PieceType type) {
+        teamColor = pieceColor;
+        pieceType = type;
     }
+
+
+    public ChessPiece(String deserialize) {
+        if (deserialize.length() != 1) throw new IllegalArgumentException("Input must be length 1");
+        char c = deserialize.charAt(0);
+        teamColor = Character.isUpperCase(c) ? ChessGame.TeamColor.WHITE : ChessGame.TeamColor.BLACK;
+        pieceType = switch (Character.toLowerCase(c)) {
+            case 'k' -> PieceType.KING;
+            case 'q' -> PieceType.QUEEN;
+            case 'b' -> PieceType.BISHOP;
+            case 'n' -> PieceType.KNIGHT;
+            case 'r' -> PieceType.ROOK;
+            case 'p' -> PieceType.PAWN;
+            default -> throw new IllegalStateException("Unexpected value: " + c);
+        };
+    }
+
 
     /**
      * The various different chess piece options
      */
     public enum PieceType {
-        KING,
-        QUEEN,
-        BISHOP,
-        KNIGHT,
-        ROOK,
-        PAWN
+        KING, QUEEN, BISHOP, KNIGHT, ROOK, PAWN
     }
+
 
     /**
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
-        throw new RuntimeException("Not implemented");
+        return teamColor;
     }
+
 
     /**
      * @return which type of chess piece this piece is
      */
     public PieceType getPieceType() {
-        throw new RuntimeException("Not implemented");
+        return pieceType;
     }
+
 
     /**
      * Calculates all the positions a chess piece can move to
@@ -47,6 +71,51 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        throw new RuntimeException("Not implemented");
+        return (switch (board.getPiece(myPosition).getPieceType()) {
+            case KING -> new KingRuleset();
+            case QUEEN -> new QueenRuleset();
+            case BISHOP -> new BishopRuleset();
+            case KNIGHT -> new KnightRuleset();
+            case ROOK -> new RookRuleset();
+            case PAWN -> new PawnRuleset();
+        }).pieceMoves(board, myPosition);
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ChessPiece that = (ChessPiece) o;
+
+        if (teamColor != that.teamColor) return false;
+        return pieceType == that.pieceType;
+    }
+
+
+    @Override
+    public int hashCode() {
+        int result = teamColor != null ? teamColor.hashCode() : 0;
+        result = 31 * result + (pieceType != null ? pieceType.hashCode() : 0);
+        return result;
+    }
+
+
+    @Override
+    public String toString() {
+        char c = switch (pieceType) {
+            case KING -> 'k';
+            case QUEEN -> 'q';
+            case BISHOP -> 'b';
+            case KNIGHT -> 'n';
+            case ROOK -> 'r';
+            case PAWN -> 'p';
+        };
+        return switch (teamColor) {
+            case WHITE -> String.valueOf(c).toUpperCase();
+            case BLACK -> String.valueOf(c).toLowerCase();
+        };
+    }
+
 }
