@@ -25,18 +25,6 @@ public class ChessPosition {
         this.col = col;
     }
 
-
-    public ChessPosition(String deserialize) {
-        if (deserialize.length() != 2) throw new IllegalArgumentException("Input must be length 2");
-        try {
-            row = Integer.parseInt(deserialize.substring(1, 2));
-            col = deserialize.charAt(0) - 96;
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(e);
-        }
-
-    }
-
     /**
      * @return which row this position is in
      * 1 codes for the bottom row

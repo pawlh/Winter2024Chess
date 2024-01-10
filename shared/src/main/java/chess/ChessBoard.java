@@ -30,32 +30,6 @@ public class ChessBoard {
 
 
     /**
-     * Constructor for deserializing from a FEN (Forsyth-Edwards Notation) string. Board has pieces provided by string
-     *
-     * @param deserialize First part of a FEN string for the board
-     */
-    public ChessBoard(String deserialize) {
-        this();
-
-        int index = 0;
-        for (int i = 8; i >= 1; i--) {
-            for (int j = 1; j <= 8; j++) {
-                char c = deserialize.charAt(index);
-                if (Character.isDigit(c)) j += Integer.parseInt(String.valueOf(c)) - 1;
-                else {
-                    ChessPiece piece = new ChessPiece(String.valueOf(c));
-                    ChessPosition pos = new ChessPosition(i, j);
-                    currentPieces.put(pos, piece);
-                }
-                index++;
-            }
-
-            if (i != 1 && deserialize.charAt(index) != '/') throw new IllegalArgumentException("IDK, help");
-            index++;
-        }
-    }
-
-    /**
      * Adds a chess piece to the chessboard
      *
      * @param position where to add the piece to

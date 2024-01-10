@@ -44,25 +44,6 @@ public class ChessMove {
     }
 
 
-    public ChessMove(String deserialize) {
-        if (deserialize.length() < 4 || deserialize.length() > 5)
-            throw new IllegalArgumentException("Input must be length 4 or 5");
-
-        startPosition = new ChessPosition(deserialize.substring(0, 2));
-
-        endPosition = new ChessPosition(deserialize.substring(2, 4));
-
-        if (deserialize.length() == 5) {
-            promotionPiece = switch (deserialize.charAt(4)) {
-                case 'q' -> ChessPiece.PieceType.QUEEN;
-                case 'b' -> ChessPiece.PieceType.BISHOP;
-                case 'n' -> ChessPiece.PieceType.KNIGHT;
-                case 'r' -> ChessPiece.PieceType.ROOK;
-                default -> throw new IllegalStateException("Unexpected value: " + deserialize.charAt(4));
-            };
-        } else promotionPiece = null;
-    }
-
     /**
      * @return ChessPosition of starting location
      */

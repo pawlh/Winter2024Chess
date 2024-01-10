@@ -23,21 +23,6 @@ public class ChessPiece {
     }
 
 
-    public ChessPiece(String deserialize) {
-        if (deserialize.length() != 1) throw new IllegalArgumentException("Input must be length 1");
-        char c = deserialize.charAt(0);
-        teamColor = Character.isUpperCase(c) ? ChessGame.TeamColor.WHITE : ChessGame.TeamColor.BLACK;
-        pieceType = switch (Character.toLowerCase(c)) {
-            case 'k' -> PieceType.KING;
-            case 'q' -> PieceType.QUEEN;
-            case 'b' -> PieceType.BISHOP;
-            case 'n' -> PieceType.KNIGHT;
-            case 'r' -> PieceType.ROOK;
-            case 'p' -> PieceType.PAWN;
-            default -> throw new IllegalStateException("Unexpected value: " + c);
-        };
-    }
-
 
     /**
      * The various different chess piece options
