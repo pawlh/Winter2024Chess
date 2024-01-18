@@ -23,7 +23,6 @@ public class ChessPiece {
     }
 
 
-
     /**
      * The various different chess piece options
      */
@@ -56,7 +55,7 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        return (switch (board.getPiece(myPosition).getPieceType()) {
+        return (switch (board.getPiece(myPosition).pieceType) {
             case KING -> new KingRuleset();
             case QUEEN -> new QueenRuleset();
             case BISHOP -> new BishopRuleset();

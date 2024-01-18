@@ -7,5 +7,7 @@ import chess.ChessPosition;
 import java.util.Collection;
 
 public interface Ruleset {
+
     Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition);
+
 }

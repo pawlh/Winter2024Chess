@@ -51,12 +51,14 @@ public class ChessMove {
         return startPosition;
     }
 
+
     /**
      * @return ChessPosition of ending location
      */
     public ChessPosition getEndPosition() {
         return endPosition;
     }
+
 
     /**
      * Gets the type of piece to promote a pawn to if pawn promotion is part of this
@@ -67,6 +69,7 @@ public class ChessMove {
     public ChessPiece.PieceType getPromotionPiece() {
         return promotionPiece;
     }
+
 
     @Override
     public int hashCode() {
@@ -107,4 +110,5 @@ public class ChessMove {
 
         return ret.toString();
     }
+
 }

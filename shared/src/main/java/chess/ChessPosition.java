@@ -7,9 +7,11 @@ package chess;
  * signature of the existing methods.
  */
 public class ChessPosition {
+
     private final int row;
 
     private final int col;
+
 
     /**
      * Constructs a new Chess position for provided location
@@ -25,6 +27,7 @@ public class ChessPosition {
         this.col = col;
     }
 
+
     /**
      * @return which row this position is in
      * 1 codes for the bottom row
@@ -33,6 +36,7 @@ public class ChessPosition {
         return row;
     }
 
+
     /**
      * @return which column this position is in
      * 1 codes for the left row
@@ -40,6 +44,7 @@ public class ChessPosition {
     public int getColumn() {
         return col;
     }
+
 
     @Override
     public int hashCode() {
@@ -63,7 +68,7 @@ public class ChessPosition {
 
     @Override
     public String toString() {
-        return "" + (char)(col + 96) + row;
+        return "" + (char) (col + 96) + row;
     }
 
 }

@@ -9,6 +9,7 @@ import java.util.*;
  * signature of the existing methods.
  */
 public class ChessGame {
+
     private final boolean[] castlingOptions;
 
     private ChessBoard board;
@@ -20,6 +21,7 @@ public class ChessGame {
     private int halfMoveClock;
 
     private int fullMoves;
+
 
     public ChessGame() {
         board = new ChessBoard();
@@ -35,12 +37,14 @@ public class ChessGame {
         board.resetBoard();
     }
 
+
     /**
      * @return Which team's turn it is
      */
     public TeamColor getTeamTurn() {
         return teamTurn;
     }
+
 
     /**
      * Set's which teams turn it is
@@ -51,13 +55,14 @@ public class ChessGame {
         teamTurn = team;
     }
 
+
     /**
      * Enum identifying the 2 possible teams in a chess game
      */
     public enum TeamColor {
-        WHITE,
-        BLACK
+        WHITE, BLACK
     }
+
 
     /**
      * Gets a valid moves for a piece at the given location
@@ -95,6 +100,7 @@ public class ChessGame {
         }
         return moves;
     }
+
 
     /**
      * Makes a move in a chess game
@@ -155,6 +161,7 @@ public class ChessGame {
         }
     }
 
+
     /**
      * Determines if the given team is in check
      *
@@ -192,6 +199,7 @@ public class ChessGame {
         return false;
     }
 
+
     /**
      * Determines if the given team is in checkmate
      *
@@ -213,6 +221,7 @@ public class ChessGame {
 
         return true;
     }
+
 
     /**
      * Determines if the given team is in stalemate, which here is defined as having
@@ -246,6 +255,7 @@ public class ChessGame {
         return true;
     }
 
+
     /**
      * Sets this game's chessboard with a given board
      *
@@ -278,6 +288,7 @@ public class ChessGame {
         }
     }
 
+
     /**
      * Gets the current chessboard
      *
@@ -287,7 +298,7 @@ public class ChessGame {
         return board;
     }
 
-    
+
     private ChessBoard hypotheticalMove(ChessMove move) throws InvalidMoveException {
         ChessBoard ret = new ChessBoard(board);
         ChessPiece piece = ret.getPiece(move.getStartPosition());
@@ -419,6 +430,7 @@ public class ChessGame {
         return ret;
     }
 
+
     @Override
     public String toString() {
         StringBuilder out = new StringBuilder(board.toString());
@@ -445,7 +457,7 @@ public class ChessGame {
 
         return out.toString();
     }
-    
+
 
     @Override
     public boolean equals(Object o) {
@@ -473,4 +485,5 @@ public class ChessGame {
         result = 31 * result + fullMoves;
         return result;
     }
+
 }

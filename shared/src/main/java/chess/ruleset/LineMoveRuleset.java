@@ -9,8 +9,8 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public abstract class LineMoveRuleset implements Ruleset {
-    protected Collection<ChessMove> lineMove(ChessBoard board, ChessPosition myPosition, int vertical,
-                                             int horizontal) {
+
+    protected Collection<ChessMove> lineMove(ChessBoard board, ChessPosition myPosition, int vertical, int horizontal) {
         Collection<ChessMove> moves = new HashSet<>();
 
         ChessPosition newPos;
@@ -26,7 +26,8 @@ public abstract class LineMoveRuleset implements Ruleset {
             if (newPosPiece == null) {
                 moves.add(new ChessMove(myPosition, newPos));
             } else {
-                if (newPosPiece.getTeamColor() != board.getPiece(myPosition).getTeamColor()) moves.add(new ChessMove(myPosition, newPos));
+                if (newPosPiece.getTeamColor() != board.getPiece(myPosition).getTeamColor())
+                    moves.add(new ChessMove(myPosition, newPos));
                 break;
             }
             try {
@@ -37,4 +38,5 @@ public abstract class LineMoveRuleset implements Ruleset {
         }
         return moves;
     }
+
 }
