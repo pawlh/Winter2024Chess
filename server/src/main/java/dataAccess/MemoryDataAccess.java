@@ -66,12 +66,12 @@ public class MemoryDataAccess implements DataAccess {
 
 
     @Override
-    public int insertGame(GameData game) throws DataAccessException {
+    public GameData insertGame(GameData game) throws DataAccessException {
         int gameID = 1;
         while (games.get(gameID) != null) gameID++;
-        games.put(gameID,
-                new GameData(gameID, game.whiteUsername(), game.blackUsername(), game.gameName(), game.game()));
-        return gameID;
+        game = new GameData(gameID, game.whiteUsername(), game.blackUsername(), game.gameName(), game.game());
+        games.put(gameID, game);
+        return game;
     }
 
 

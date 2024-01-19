@@ -77,7 +77,7 @@ public interface DataAccess {
      * @return The gameID of the inserted game
      * @throws DataAccessException A DataAccessException is thrown if data cannot be accessed for any reason
      */
-    int insertGame(GameData game) throws DataAccessException;
+    GameData insertGame(GameData game) throws DataAccessException;
 
 
     /**

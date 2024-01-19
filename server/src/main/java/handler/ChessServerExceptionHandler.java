@@ -1,4 +1,4 @@
-package handlers;
+package handler;
 
 import com.google.gson.Gson;
 import spark.ExceptionHandler;

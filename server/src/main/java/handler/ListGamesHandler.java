@@ -1,12 +1,12 @@
-package handlers;
+package handler;
 
 import dataAccess.DataAccess;
 import service.ChessServerException;
-import service.UserService;
+import service.GameService;
 
-public class LogoutHandler extends HttpHandler<Void>{
+public class ListGamesHandler extends HttpHandler<Void>{
 
-    public LogoutHandler(DataAccess dataAccess) {
+    public ListGamesHandler(DataAccess dataAccess) {
         super(dataAccess);
     }
 
@@ -19,8 +19,7 @@ public class LogoutHandler extends HttpHandler<Void>{
 
     @Override
     protected Object getResult(DataAccess dataAccess, Void request, String authtoken) throws ChessServerException {
-        new UserService(dataAccess).logout(authtoken);
-        return null;
+        return new GameService(dataAccess).listGames(authtoken);
     }
 
 }

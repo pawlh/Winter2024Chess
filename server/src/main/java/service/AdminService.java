@@ -2,8 +2,6 @@ package service;
 
 import dataAccess.DataAccess;
 import dataAccess.DataAccessException;
-import model.AuthData;
-import model.UserData;
 
 public class AdminService {
     private final DataAccess dataAccess;

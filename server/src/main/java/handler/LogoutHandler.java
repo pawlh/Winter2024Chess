@@ -1,12 +1,12 @@
-package handlers;
+package handler;
 
 import dataAccess.DataAccess;
-import service.AdminService;
 import service.ChessServerException;
+import service.UserService;
 
-public class ClearHandler extends HttpHandler<Void>{
+public class LogoutHandler extends HttpHandler<Void>{
 
-    public ClearHandler(DataAccess dataAccess) {
+    public LogoutHandler(DataAccess dataAccess) {
         super(dataAccess);
     }
 
@@ -19,7 +19,7 @@ public class ClearHandler extends HttpHandler<Void>{
 
     @Override
     protected Object getResult(DataAccess dataAccess, Void request, String authtoken) throws ChessServerException {
-        new AdminService(dataAccess).clear();
+        new UserService(dataAccess).logout(authtoken);
         return null;
     }
 
