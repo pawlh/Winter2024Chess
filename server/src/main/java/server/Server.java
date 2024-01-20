@@ -3,22 +3,20 @@ package server;
 import dataAccess.DataAccess;
 import dataAccess.MemoryDataAccess;
 import handler.*;
-import service.*;
-import spark.*;
+import service.BadRequestException;
+import service.ChessServerException;
+import service.RequestItemTakenException;
+import service.UnauthorizedException;
+import spark.Spark;
 
 import java.net.HttpURLConnection;
 
 public class Server {
 
-    public static void main(String[] args) {
-        System.out.println("http://localhost:" +new Server().run(0));
-    }
-
     public int run(int desiredPort) {
         Spark.port(desiredPort);
 
-        var webDir = Server.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-        Spark.staticFiles.location( "web");
+        Spark.staticFiles.location("web");
 
         DataAccess dataAccess = new MemoryDataAccess();
 

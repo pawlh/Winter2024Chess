@@ -105,4 +105,6 @@ public interface DataAccess {
      * @throws DataAccessException A DataAccessException is thrown if data cannot be accessed for any reason
      */
     UserData findUser(String username) throws DataAccessException;
+
+    boolean verifyUser(UserData user) throws DataAccessException;
 }

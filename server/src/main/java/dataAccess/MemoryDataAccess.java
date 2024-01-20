@@ -95,4 +95,10 @@ public class MemoryDataAccess implements DataAccess {
         return users.get(username);
     }
 
+
+    @Override
+    public boolean verifyUser(UserData user) throws DataAccessException {
+        return users.get(user.username()) != null;
+    }
+
 }
