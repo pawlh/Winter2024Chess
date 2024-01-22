@@ -1,7 +1,9 @@
 package server;
 
 import dataAccess.DataAccess;
+import dataAccess.DataAccessException;
 import dataAccess.MemoryDataAccess;
+import dataAccess.MySqlDataAccess;
 import handler.*;
 import service.BadRequestException;
 import service.ChessServerException;
@@ -14,11 +16,21 @@ import java.net.HttpURLConnection;
 public class Server {
 
     public int run(int desiredPort) {
+        try {
+            Thread.sleep(20);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         Spark.port(desiredPort);
 
         Spark.staticFiles.location("web");
 
-        DataAccess dataAccess = new MemoryDataAccess();
+        DataAccess dataAccess;
+        try {
+            dataAccess = new MySqlDataAccess();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
 
         // Register your endpoints and handle exceptions here.
         Spark.post("/user", new RegisterHandler(dataAccess));

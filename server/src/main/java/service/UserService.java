@@ -22,7 +22,7 @@ public class UserService {
             }
 
 
-            if (dataAccess.findUser(user.username()) != null) {
+            if (dataAccess.usernameExists(user.username())) {
                 throw new RequestItemTakenException("Error: username taken");
             }
 
@@ -40,8 +40,7 @@ public class UserService {
 
     public AuthData login(UserData user) throws ChessServerException {
         try {
-            UserData dataUser = dataAccess.findUser(user.username());
-            if (dataUser == null || !user.password().equals(dataUser.password())) {
+            if (!dataAccess.verifyUser(user)) {
                 throw new UnauthorizedException("Error: Incorrect username or password");
             }
 

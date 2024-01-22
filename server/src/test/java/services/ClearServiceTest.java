@@ -34,7 +34,7 @@ public class ClearServiceTest {
         Assertions.assertDoesNotThrow(() -> new AdminService(dataAccess).clear());
 
 
-        Assertions.assertNull(dataAccess.findUser(user.username()));
+        Assertions.assertNull(dataAccess.usernameExists(user.username()));
         Assertions.assertNull(dataAccess.findGame(game.gameID()));
         Assertions.assertNull(dataAccess.findAuth(token.authToken()));
     }

@@ -35,14 +35,10 @@ public class RegisterServiceTest {
         Assertions.assertNotNull(result.authToken());
         Assertions.assertEquals(request.username(), result.username());
 
-        UserData user = dataAccess.findUser(request.username());
         AuthData token = dataAccess.findAuth(result.authToken());
-        
 
-        Assertions.assertEquals(request.password(), user.password());
-        Assertions.assertEquals(request.username(), user.username());
-        Assertions.assertEquals(request.email(), user.email());
-        Assertions.assertEquals(token.username(), user.username());
+        Assertions.assertTrue(dataAccess.verifyUser(request));
+        Assertions.assertEquals(token.username(), request.username());
     }
 
     @Test

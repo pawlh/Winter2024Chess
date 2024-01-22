@@ -91,8 +91,8 @@ public class MemoryDataAccess implements DataAccess {
 
 
     @Override
-    public UserData findUser(String username) throws DataAccessException {
-        return users.get(username);
+    public boolean usernameExists(String username) throws DataAccessException {
+        return users.get(username) != null;
     }
 
 
