@@ -143,7 +143,7 @@ public class MySqlDataAccess implements DataAccess {
     private <T> T executeQuery(String statement, ResultSetParser<T> parser, Object... params)
             throws DataAccessException {
         try (var conn = DatabaseManager.getConnection()) {
-            try (var ps = conn.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS)) {
+            try (var ps = conn.prepareStatement(statement)) {
                 addParams(ps, params);
                 try (var rs = ps.executeQuery()) {
                     return parser.parseResultSet(rs);
