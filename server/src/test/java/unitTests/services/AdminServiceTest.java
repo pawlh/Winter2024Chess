@@ -21,6 +21,7 @@ public class AdminServiceTest {
     @BeforeAll
     public static void beforeAll() throws ChessServerException {
         dataAccess = TestFactory.getDatabaseFactory();
+        new AdminService(dataAccess).clear();
     }
 
 
