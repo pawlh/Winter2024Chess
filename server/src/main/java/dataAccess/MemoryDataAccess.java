@@ -41,7 +41,6 @@ public class MemoryDataAccess implements DataAccess {
 
     @Override
     public void deleteAuth(String authToken) throws DataAccessException {
-        if (!authTokens.containsKey(authToken)) throw new DataAccessException("Authtoken does not exist");
         authTokens.remove(authToken);
     }
 
@@ -67,6 +66,7 @@ public class MemoryDataAccess implements DataAccess {
 
     @Override
     public GameData insertGame(GameData game) throws DataAccessException {
+        if (game.game() == null) throw new DataAccessException("Game cannot be null");
         int gameID = 1;
         while (games.get(gameID) != null) gameID++;
         game = new GameData(gameID, game.whiteUsername(), game.blackUsername(), game.gameName(), game.game());
@@ -78,6 +78,7 @@ public class MemoryDataAccess implements DataAccess {
     @Override
     public void updateGame(GameData game) throws DataAccessException {
         if (!games.containsKey(game.gameID())) throw new DataAccessException("Game does not exist");
+        if (game.game() == null) throw new DataAccessException("Game cannot be null");
         games.remove(game.gameID());
         games.put(game.gameID(), game);
     }
