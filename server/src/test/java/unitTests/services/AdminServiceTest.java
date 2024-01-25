@@ -1,4 +1,4 @@
-package services;
+package unitTests.services;
 
 import chess.ChessGame;
 import dataAccess.DataAccess;
@@ -11,14 +11,19 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import service.AdminService;
 import service.ChessServerException;
+import unitTests.TestFactory;
 
-public class ClearServiceTest {
+public class AdminServiceTest {
+
     private static DataAccess dataAccess;
+
 
     @BeforeAll
     public static void beforeAll() throws ChessServerException {
         dataAccess = TestFactory.getDatabaseFactory();
     }
+
+
     @Test
     public void clearPass() throws ChessServerException, DataAccessException {
 
@@ -38,4 +43,5 @@ public class ClearServiceTest {
         Assertions.assertNull(dataAccess.findGame(game.gameID()));
         Assertions.assertNull(dataAccess.findAuth(token.authToken()));
     }
+
 }
