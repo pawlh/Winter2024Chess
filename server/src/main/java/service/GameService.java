@@ -8,15 +8,15 @@ import model.GameData;
 import model.JoinGameRequest;
 import model.ListGamesResponse;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 public class GameService {
+
     private final DataAccess dataAccess;
+
 
     public GameService(DataAccess dataAccess) {
         this.dataAccess = dataAccess;
     }
+
 
     public GameData createGame(GameData request, String authToken) throws ChessServerException {
         try {
@@ -52,8 +52,10 @@ public class GameService {
 
             AuthData auth = authorization(authToken);
 
-            if (request.playerColor() == ChessGame.TeamColor.WHITE && game.whiteUsername() != null ||
-                    request.playerColor() == ChessGame.TeamColor.BLACK && game.blackUsername() != null) {
+            if (request.playerColor() == ChessGame.TeamColor.WHITE && game.whiteUsername() != null &&
+                    !game.whiteUsername().equals(auth.username()) ||
+                    request.playerColor() == ChessGame.TeamColor.BLACK && game.blackUsername() != null &&
+                            !game.blackUsername().equals(auth.username())) {
                 throw new RequestItemTakenException("Error: Player color taken");
             }
 
@@ -65,10 +67,11 @@ public class GameService {
             }
 
             dataAccess.updateGame(game);
-        }catch (DataAccessException e) {
+        } catch (DataAccessException e) {
             throw new ChessServerException(e);
         }
     }
+
 
     private AuthData authorization(String authtoken) throws ChessServerException {
         try {
@@ -79,4 +82,5 @@ public class GameService {
             throw new ChessServerException(e);
         }
     }
+
 }

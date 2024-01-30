@@ -15,6 +15,10 @@ import java.net.HttpURLConnection;
 
 public class Server {
 
+    public static void main(String[] args) {
+        new Server().run(8080);
+    }
+
     public int run(int desiredPort) {
         try {
             Thread.sleep(20);
