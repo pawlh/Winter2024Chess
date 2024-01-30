@@ -3,6 +3,7 @@ package passoffTests;
 import chess.*;
 import org.junit.jupiter.api.Assertions;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -63,9 +64,17 @@ public class TestFactory {
         var board = loadBoard(boardText);
         var testPiece = board.getPiece(startPosition);
         var validMoves = loadMoves(startPosition, endPositions);
-        var pieceMoves = new HashSet<>(testPiece.pieceMoves(board, startPosition));
+        validateMoves(board, testPiece, startPosition, validMoves);
+    }
 
-        Assertions.assertEquals(validMoves, pieceMoves, "Wrong moves");
+    static public void validateMoves(ChessBoard board, ChessPiece testPiece, ChessPosition startPosition, Set<ChessMove> validMoves) {
+        var pieceMoves = new HashSet<>(testPiece.pieceMoves(board, startPosition));
+        assertCollectionsEquals(validMoves, pieceMoves, "Wrong moves");
+    }
+
+    static public <T> void assertCollectionsEquals(Collection<T> first, Collection<T> second, String message) {
+        Assertions.assertEquals(new HashSet<>(first), new HashSet<>(second), message);
+        Assertions.assertEquals(first.size(), second.size(), "Collections not the same size");
     }
 
     final static Map<Character, ChessPiece.PieceType> charToTypeMap = Map.of(
