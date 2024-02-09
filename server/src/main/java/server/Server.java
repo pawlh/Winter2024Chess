@@ -2,7 +2,6 @@ package server;
 
 import dataAccess.DataAccess;
 import dataAccess.DataAccessException;
-import dataAccess.MemoryDataAccess;
 import dataAccess.MySqlDataAccess;
 import handler.*;
 import service.BadRequestException;
