@@ -82,7 +82,7 @@ public class MySqlDataAccess implements DataAccess {
     @Override
     public GameData insertGame(GameData game) throws DataAccessException {
         int gameId = executeUpdate(
-                "INSERT INTO game (gameName, whiteUsername, blackUsername, game) " + "VALUES (?, ?, ?, ?);",
+                "INSERT INTO game (gameName, whiteUsername, blackUsername, game) VALUES (?, ?, ?, ?);",
                 game.gameName(), game.whiteUsername(), game.blackUsername(), game.game());
         return new GameData(gameId, game.whiteUsername(), game.blackUsername(), game.gameName(), game.game());
     }
@@ -99,7 +99,7 @@ public class MySqlDataAccess implements DataAccess {
     public void insertUser(UserData user) throws DataAccessException {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String hashedPassword = encoder.encode(user.password());
-        String statement = "INSERT INTO user (username, password, email) " + "VALUES (?, ?, ?);";
+        String statement = "INSERT INTO user (username, password, email) VALUES (?, ?, ?);";
         executeUpdate(statement, user.username(), hashedPassword, user.email());
     }
 
