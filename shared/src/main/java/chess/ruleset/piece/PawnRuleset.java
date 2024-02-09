@@ -1,11 +1,11 @@
-package chess.ruleset;
+package chess.ruleset.piece;
 
 import chess.*;
 
 import java.util.Collection;
 import java.util.HashSet;
 
-public class PawnRuleset implements Ruleset {
+public class PawnRuleset implements PieceRuleset {
 
 
     @Override

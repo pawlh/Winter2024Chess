@@ -1,4 +1,4 @@
-package chess.ruleset;
+package chess.ruleset.piece;
 
 import chess.ChessBoard;
 import chess.ChessMove;
@@ -8,7 +8,7 @@ import chess.ChessPosition;
 import java.util.Collection;
 import java.util.HashSet;
 
-public class KingRuleset implements Ruleset {
+public class KingRuleset implements PieceRuleset {
 
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
