@@ -20,6 +20,8 @@ public class ChessGame {
 
     private TeamColor teamTurn;
 
+    boolean active;
+
     private transient final List<ExtraRuleset> extraRules = List.of(new CastlingRules(this), new EnPassantRules());
 
 
@@ -28,6 +30,7 @@ public class ChessGame {
         teamTurn = TeamColor.WHITE;
 
         board.resetBoard();
+        active = true;
     }
 
 
@@ -261,6 +264,16 @@ public class ChessGame {
             board.addPiece(move.getStartPosition(), null);
             board.addPiece(move.getEndPosition(), new ChessPiece(color, move.getPromotionPiece()));
         }
+    }
+
+
+    public boolean isActive() {
+        return active;
+    }
+
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
 

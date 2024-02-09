@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import service.AdminService;
 import service.ChessServerException;
 import unitTests.TestFactory;
+import websocket.WebSocketHandler;
 
 public class AdminServiceTest {
 

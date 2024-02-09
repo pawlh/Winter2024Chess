@@ -9,6 +9,7 @@ import service.ChessServerException;
 import service.RequestItemTakenException;
 import service.UnauthorizedException;
 import spark.Spark;
+import websocket.WebSocketHandler;
 
 import java.net.HttpURLConnection;
 
@@ -29,11 +30,17 @@ public class Server {
         Spark.staticFiles.location("web");
 
         DataAccess dataAccess;
+
         try {
             dataAccess = new MySqlDataAccess();
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
         }
+
+        WebSocketHandler ws = WebSocketHandler.getInstance();
+        ws.setDataAccess(dataAccess);
+
+        Spark.webSocket("/connect", ws);
 
         // Register your endpoints and handle exceptions here.
         Spark.post("/user", new RegisterHandler(dataAccess));
