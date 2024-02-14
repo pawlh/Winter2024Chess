@@ -18,7 +18,7 @@ public class LogoutHandler extends HttpHandler<Void>{
 
 
     @Override
-    protected Object getResult(DataAccess dataAccess, Void request, String authtoken) throws ChessServerException {
+    protected Object getServiceResult(DataAccess dataAccess, Void request, String authtoken) throws ChessServerException {
         new UserService(dataAccess).logout(authtoken);
         return null;
     }

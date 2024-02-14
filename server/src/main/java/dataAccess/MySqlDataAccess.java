@@ -121,12 +121,12 @@ public class MySqlDataAccess implements DataAccess {
 
 
     private int executeUpdate(String statement, Object... params) throws DataAccessException {
-        try (var conn = DatabaseManager.getConnection()) {
-            try (var ps = conn.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection conn = DatabaseManager.getConnection()) {
+            try (PreparedStatement ps = conn.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS)) {
                 addParams(ps, params);
                 ps.executeUpdate();
 
-                var rs = ps.getGeneratedKeys();
+                ResultSet rs = ps.getGeneratedKeys();
                 if (rs.next()) {
                     return rs.getInt(1);
                 }
@@ -142,13 +142,12 @@ public class MySqlDataAccess implements DataAccess {
 
     private <T> T executeQuery(String statement, ResultSetParser<T> parser, Object... params)
             throws DataAccessException {
-        try (var conn = DatabaseManager.getConnection()) {
-            try (var ps = conn.prepareStatement(statement)) {
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(statement)) {
                 addParams(ps, params);
-                try (var rs = ps.executeQuery()) {
+                try (ResultSet rs = ps.executeQuery()) {
                     return parser.parseResultSet(rs);
                 }
-            }
         } catch (SQLException e) {
             throw new DataAccessException(
                     String.format("unable to update database: %s, %s", statement, e.getMessage()));
@@ -157,8 +156,8 @@ public class MySqlDataAccess implements DataAccess {
 
 
     private void addParams(PreparedStatement ps, Object[] params) throws SQLException, DataAccessException {
-        for (var i = 0; i < params.length; i++) {
-            var param = params[i];
+        for (int i = 0; i < params.length; i++) {
+            Object param = params[i];
             switch (param) {
                 case String p -> ps.setString(i + 1, p);
                 case Integer p -> ps.setInt(i + 1, p);
@@ -195,9 +194,9 @@ public class MySqlDataAccess implements DataAccess {
 
     private void configureDatabase() throws DataAccessException {
         DatabaseManager.createDatabase();
-        try (var conn = DatabaseManager.getConnection()) {
-            for (var statement : createStatements) {
-                try (var preparedStatement = conn.prepareStatement(statement)) {
+        try (Connection conn = DatabaseManager.getConnection()) {
+            for (String statement : createStatements) {
+                try (PreparedStatement preparedStatement = conn.prepareStatement(statement)) {
                     preparedStatement.executeUpdate();
                 }
             }

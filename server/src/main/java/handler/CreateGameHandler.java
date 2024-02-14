@@ -19,7 +19,7 @@ public class CreateGameHandler extends HttpHandler<GameData> {
 
 
     @Override
-    protected Object getResult(DataAccess dataAccess, GameData request, String authtoken) throws ChessServerException {
+    protected Object getServiceResult(DataAccess dataAccess, GameData request, String authtoken) throws ChessServerException {
         return new GameService(dataAccess).createGame(request, authtoken);
     }
 

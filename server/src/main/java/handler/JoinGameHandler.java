@@ -19,7 +19,7 @@ public class JoinGameHandler extends HttpHandler<JoinGameRequest> {
 
 
     @Override
-    protected Object getResult(DataAccess dataAccess, JoinGameRequest request, String authtoken)
+    protected Object getServiceResult(DataAccess dataAccess, JoinGameRequest request, String authtoken)
             throws ChessServerException {
         new GameService(dataAccess).joinGame(request, authtoken);
         return null;

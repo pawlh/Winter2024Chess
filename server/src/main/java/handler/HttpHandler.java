@@ -29,7 +29,7 @@ public abstract class HttpHandler<T> implements Route {
             requestObject = gson.fromJson(request.body(), requestClass);
         }
 
-        Object result = getResult(dataAccess, requestObject, authToken);
+        Object result = getServiceResult(dataAccess, requestObject, authToken);
 
         response.status(HttpURLConnection.HTTP_OK);
 
@@ -38,7 +38,7 @@ public abstract class HttpHandler<T> implements Route {
 
     protected abstract Class<T> getRequestClass();
 
-    protected abstract Object getResult(DataAccess dataAccess, T request, String authtoken) throws ChessServerException;
+    protected abstract Object getServiceResult(DataAccess dataAccess, T request, String authtoken) throws ChessServerException;
 
 
 }

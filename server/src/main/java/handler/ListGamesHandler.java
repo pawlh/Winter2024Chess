@@ -18,7 +18,7 @@ public class ListGamesHandler extends HttpHandler<Void>{
 
 
     @Override
-    protected Object getResult(DataAccess dataAccess, Void request, String authtoken) throws ChessServerException {
+    protected Object getServiceResult(DataAccess dataAccess, Void request, String authtoken) throws ChessServerException {
         return new GameService(dataAccess).listGames(authtoken);
     }
 

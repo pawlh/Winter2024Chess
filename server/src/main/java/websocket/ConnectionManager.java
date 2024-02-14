@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ConnectionManager {
-    private Map<Integer, Set<Session>> sessions = new ConcurrentHashMap<>();
+    private final Map<Integer, Set<Session>> sessions = new ConcurrentHashMap<>();
 
 
     public void addSession(int gameId, Session session) {

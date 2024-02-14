@@ -3,4 +3,7 @@
   <component name="CheckStyle-IDEA-Module" serialisationVersion="2">
     <option name="activeLocationsIds" />
   </component>
+  <component name="SonarLintModuleSettings">
+    <option name="uniqueId" value="18c0f432-49f7-4d68-9154-d8f7e52ae56b" />
+  </component>
 </module>

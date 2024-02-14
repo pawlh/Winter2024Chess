@@ -20,7 +20,7 @@ public class RegisterHandler extends HttpHandler<UserData> {
 
 
     @Override
-    protected AuthData getResult(DataAccess dataAccess, UserData user, String authtoken) throws ChessServerException {
+    protected AuthData getServiceResult(DataAccess dataAccess, UserData user, String authtoken) throws ChessServerException {
         return new UserService(dataAccess).register(user);
     }
 

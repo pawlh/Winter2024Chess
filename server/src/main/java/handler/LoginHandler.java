@@ -19,7 +19,7 @@ public class LoginHandler extends HttpHandler<UserData> {
 
 
     @Override
-    protected Object getResult(DataAccess dataAccess, UserData request, String authtoken) throws ChessServerException {
+    protected Object getServiceResult(DataAccess dataAccess, UserData request, String authtoken) throws ChessServerException {
         return new UserService(dataAccess).login(request);
     }
 
