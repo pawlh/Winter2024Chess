@@ -4,10 +4,7 @@ import model.AuthData;
 import model.GameData;
 import model.UserData;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MemoryDataAccess implements DataAccess {
 
@@ -99,7 +96,8 @@ public class MemoryDataAccess implements DataAccess {
 
     @Override
     public boolean verifyUser(UserData user) throws DataAccessException {
-        return users.get(user.username()) != null;
+        UserData fromDatabase = users.get(user.username());
+        return fromDatabase != null && Objects.equals(user.password(), fromDatabase.password());
     }
 
 }
