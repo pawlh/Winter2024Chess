@@ -1,9 +1,9 @@
-package unitTests;
+package dataAccessTests;
 
 import dataAccess.DataAccess;
 import dataAccess.DataAccessException;
-import dataAccess.MemoryDataAccess;
-import dataAccess.MySqlDataAccess;
+import dataAccess.memory.MemoryDataAccess;
+import dataAccess.mysql.MySqlDataAccess;
 
 public class TestFactory {
 
@@ -12,7 +12,7 @@ public class TestFactory {
     private static final DAOTypes currentType = DAOTypes.MYSQL;
 
 
-    public static DataAccess getDatabaseFactory() {
+    public static DataAccess getDataAccess() {
         return switch (currentType) {
             case MYSQL -> {
                 try {

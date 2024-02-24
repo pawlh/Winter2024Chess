@@ -22,14 +22,14 @@ public class UserService {
             }
 
 
-            if (dataAccess.usernameExists(user.username())) {
+            if (dataAccess.getUserDAO().usernameExists(user.username())) {
                 throw new RequestItemTakenException("Error: username taken");
             }
 
-            dataAccess.insertUser(user);
+            dataAccess.getUserDAO().insertUser(user);
 
             AuthData auth = AuthData.getNewAuthData(user.username());
-            dataAccess.insertAuth(auth);
+            dataAccess.getAuthDAO().insertAuth(auth);
 
             return auth;
         } catch (DataAccessException e) {
@@ -40,12 +40,12 @@ public class UserService {
 
     public AuthData login(UserData user) throws ChessServerException {
         try {
-            if (!dataAccess.verifyUser(user)) {
+            if (!dataAccess.getUserDAO().verifyUser(user)) {
                 throw new UnauthorizedException("Error: Incorrect username or password");
             }
 
             AuthData auth = AuthData.getNewAuthData(user.username());
-            dataAccess.insertAuth(auth);
+            dataAccess.getAuthDAO().insertAuth(auth);
 
             return auth;
         } catch (DataAccessException e) {
@@ -56,9 +56,9 @@ public class UserService {
 
     public void logout(String authtoken) throws ChessServerException {
         try {
-            AuthData delete = dataAccess.findAuth(authtoken);
+            AuthData delete = dataAccess.getAuthDAO().findAuth(authtoken);
             if (delete == null) throw new UnauthorizedException("Error: Unauthorized");
-            dataAccess.deleteAuth(authtoken);
+            dataAccess.getAuthDAO().deleteAuth(authtoken);
         } catch (DataAccessException e) {
             throw new ChessServerException(e);
         }

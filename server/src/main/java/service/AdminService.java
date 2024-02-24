@@ -13,7 +13,9 @@ public class AdminService {
 
     public void clear() throws ChessServerException {
         try {
-            dataAccess.clearAll();
+            dataAccess.getAuthDAO().clear();
+            dataAccess.getGameDAO().clear();
+            dataAccess.getUserDAO().clear();
             WebSocketHandler.getInstance().clear();
         }catch (DataAccessException e) {
             throw new ChessServerException(e);

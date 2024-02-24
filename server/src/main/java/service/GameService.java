@@ -25,7 +25,7 @@ public class GameService {
             if (request.gameName() == null) throw new BadRequestException("Game name cannot be null");
 
             GameData game = new GameData(0, null, null, request.gameName(), new ChessGame());
-            game = dataAccess.insertGame(game);
+            game = dataAccess.getGameDAO().insertGame(game);
 
             return game;
         } catch (DataAccessException e) {
@@ -38,7 +38,7 @@ public class GameService {
         try {
             authorization(authToken);
 
-            return new ListGamesResponse(dataAccess.findAllGames());
+            return new ListGamesResponse(dataAccess.getGameDAO().findAllGames());
         } catch (DataAccessException e) {
             throw new ChessServerException(e);
         }
@@ -47,7 +47,7 @@ public class GameService {
 
     public synchronized void joinGame(JoinGameRequest request, String authToken) throws ChessServerException {
         try {
-            GameData game = dataAccess.findGame(request.gameID());
+            GameData game = dataAccess.getGameDAO().findGame(request.gameID());
             if (game == null) throw new BadRequestException("Error: Game not found");
 
             AuthData auth = authorization(authToken);
@@ -66,7 +66,7 @@ public class GameService {
                 game = new GameData(game.gameID(), game.whiteUsername(), auth.username(), game.gameName(), game.game());
             }
 
-            dataAccess.updateGame(game);
+            dataAccess.getGameDAO().updateGame(game);
         } catch (DataAccessException e) {
             throw new ChessServerException(e);
         }
@@ -75,7 +75,7 @@ public class GameService {
 
     private AuthData authorization(String authtoken) throws ChessServerException {
         try {
-            AuthData auth = dataAccess.findAuth(authtoken);
+            AuthData auth = dataAccess.getAuthDAO().findAuth(authtoken);
             if (auth == null) throw new UnauthorizedException("Error: Unauthorized");
             return auth;
         } catch (DataAccessException e) {

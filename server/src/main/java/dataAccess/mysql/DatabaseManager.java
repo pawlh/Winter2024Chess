@@ -1,4 +1,6 @@
-package dataAccess;
+package dataAccess.mysql;
+
+import dataAccess.DataAccessException;
 
 import java.sql.*;
 import java.util.Properties;

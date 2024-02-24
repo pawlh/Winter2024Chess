@@ -2,7 +2,7 @@ package server;
 
 import dataAccess.DataAccess;
 import dataAccess.DataAccessException;
-import dataAccess.MySqlDataAccess;
+import dataAccess.mysql.MySqlDataAccess;
 import handler.*;
 import service.BadRequestException;
 import service.ChessServerException;

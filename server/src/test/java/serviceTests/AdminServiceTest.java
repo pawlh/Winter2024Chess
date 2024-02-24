@@ -1,4 +1,4 @@
-package unitTests.services;
+package serviceTests;
 
 import chess.ChessGame;
 import dataAccess.DataAccess;
@@ -11,8 +11,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import service.AdminService;
 import service.ChessServerException;
-import unitTests.TestFactory;
-import websocket.WebSocketHandler;
+import dataAccessTests.TestFactory;
 
 public class AdminServiceTest {
 
@@ -21,7 +20,7 @@ public class AdminServiceTest {
 
     @BeforeAll
     public static void beforeAll() throws ChessServerException {
-        dataAccess = TestFactory.getDatabaseFactory();
+        dataAccess = TestFactory.getDataAccess();
         new AdminService(dataAccess).clear();
     }
 
@@ -34,16 +33,16 @@ public class AdminServiceTest {
         AuthData token = new AuthData("totallyRandomAuth", user.username());
 
 
-        dataAccess.insertUser(user);
-        dataAccess.insertGame(game);
-        dataAccess.insertAuth(token);
+        dataAccess.getUserDAO().insertUser(user);
+        dataAccess.getGameDAO().insertGame(game);
+        dataAccess.getAuthDAO().insertAuth(token);
 
         Assertions.assertDoesNotThrow(() -> new AdminService(dataAccess).clear());
 
 
-        Assertions.assertFalse(dataAccess.usernameExists(user.username()));
-        Assertions.assertNull(dataAccess.findGame(game.gameID()));
-        Assertions.assertNull(dataAccess.findAuth(token.authToken()));
+        Assertions.assertFalse(dataAccess.getUserDAO().usernameExists(user.username()));
+        Assertions.assertNull(dataAccess.getGameDAO().findGame(game.gameID()));
+        Assertions.assertNull(dataAccess.getAuthDAO().findAuth(token.authToken()));
     }
 
 }

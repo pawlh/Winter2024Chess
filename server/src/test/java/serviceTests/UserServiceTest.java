@@ -1,7 +1,9 @@
-package unitTests.services;
+package serviceTests;
 
+import dataAccess.AuthDAO;
 import dataAccess.DataAccess;
 import dataAccess.DataAccessException;
+import dataAccess.UserDAO;
 import model.AuthData;
 import model.UserData;
 import org.junit.jupiter.api.Assertions;
@@ -9,16 +11,20 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.*;
-import unitTests.TestFactory;
+import dataAccessTests.TestFactory;
 
 public class UserServiceTest {
 
     private static DataAccess dataAccess;
+    private static AuthDAO authDAO;
+    private static UserDAO userDAO;
 
 
     @BeforeAll
     public static void beforeAll() throws ChessServerException {
-        dataAccess = TestFactory.getDatabaseFactory();
+        dataAccess = TestFactory.getDataAccess();
+        userDAO = dataAccess.getUserDAO();
+        authDAO = dataAccess.getAuthDAO();
     }
 
 
@@ -38,9 +44,9 @@ public class UserServiceTest {
         Assertions.assertNotNull(result.authToken());
         Assertions.assertEquals(request.username(), result.username());
 
-        AuthData token = dataAccess.findAuth(result.authToken());
+        AuthData token = authDAO.findAuth(result.authToken());
 
-        Assertions.assertTrue(dataAccess.verifyUser(request));
+        Assertions.assertTrue(userDAO.verifyUser(request));
         Assertions.assertEquals(token.username(), request.username());
     }
 
@@ -66,7 +72,7 @@ public class UserServiceTest {
         Assertions.assertNotNull(result.authToken());
         Assertions.assertEquals(request.username(), result.username());
 
-        AuthData token = dataAccess.findAuth(result.authToken());
+        AuthData token = authDAO.findAuth(result.authToken());
 
         Assertions.assertEquals(request.username(), token.username());
 
@@ -89,7 +95,7 @@ public class UserServiceTest {
 
         userService.logout(registerResult.authToken());
 
-        AuthData token = dataAccess.findAuth(registerResult.authToken());
+        AuthData token = authDAO.findAuth(registerResult.authToken());
         Assertions.assertNull(token);
 
     }

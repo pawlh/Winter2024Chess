@@ -62,7 +62,7 @@ public class WebSocketHandler {
         AuthData token;
         GameData game;
         try {
-            token = dataAccess.findAuth(command.getAuthString());
+            token = dataAccess.getAuthDAO().findAuth(command.getAuthString());
 
             if (token == null) {
                 connectionManager.sendError(session, "Error: Invalid authtoken");
@@ -70,7 +70,7 @@ public class WebSocketHandler {
                 return;
             }
 
-            game = dataAccess.findGame(command.getGameID());
+            game = dataAccess.getGameDAO().findGame(command.getGameID());
 
             if (game == null) {
                 connectionManager.sendError(session, "Error: Invalid gameID");
@@ -191,7 +191,7 @@ public class WebSocketHandler {
         }
 
         try {
-            dataAccess.updateGame(game);
+            dataAccess.getGameDAO().updateGame(game);
         } catch (DataAccessException e) {
             connectionManager.sendError(session, "Error: Unknown server error");
             return;
@@ -226,7 +226,7 @@ public class WebSocketHandler {
                 (Objects.equals(username, game.whiteUsername())) ? game.blackUsername() : game.whiteUsername();
 
         try {
-            dataAccess.updateGame(game);
+            dataAccess.getGameDAO().updateGame(game);
         } catch (DataAccessException e) {
             connectionManager.sendError(session, "Error: Unknown server error: " + e.getMessage());
             return;

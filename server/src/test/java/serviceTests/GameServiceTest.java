@@ -1,26 +1,30 @@
-package unitTests.services;
+package serviceTests;
 
 import chess.ChessGame;
-import dataAccess.DataAccess;
-import dataAccess.DataAccessException;
+import dataAccess.*;
 import model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.*;
-import unitTests.TestFactory;
+import dataAccessTests.TestFactory;
 
 import java.util.UUID;
 
 public class GameServiceTest {
 
     private static DataAccess dataAccess;
-
+    private static AuthDAO authDAO;
+    private static GameDAO gameDAO;
+    private static UserDAO userDAO;
 
     @BeforeAll
     public static void beforeAll() throws ChessServerException {
-        dataAccess = TestFactory.getDatabaseFactory();
+        dataAccess = TestFactory.getDataAccess();
+        authDAO = dataAccess.getAuthDAO();
+        gameDAO = dataAccess.getGameDAO();
+        userDAO = dataAccess.getUserDAO();
     }
 
 
@@ -35,7 +39,7 @@ public class GameServiceTest {
 
         AuthData token = new AuthData("totallyRandomAuth", "testusername");
 
-        dataAccess.insertAuth(token);
+        authDAO.insertAuth(token);
 
         GameData request = new GameData(0, null, null, "Super Exciting Chess Game!", new ChessGame());
 
@@ -44,7 +48,7 @@ public class GameServiceTest {
         Assertions.assertTrue(result.gameID() >= 0);
 
 
-        GameData game = dataAccess.findGame(result.gameID());
+        GameData game = gameDAO.findGame(result.gameID());
 
 
         Assertions.assertEquals(request.gameName(), game.gameName());
@@ -70,13 +74,13 @@ public class GameServiceTest {
 
         UserData user = new UserData("sheila", "superSecurePa$$w0rd", "noreply@byu.edu");
 
-        dataAccess.insertUser(user);
+        userDAO.insertUser(user);
 
         GameData game = new GameData(0, user.username(), null, "Really Cool Name", new ChessGame());
-        game = dataAccess.insertGame(game);
+        game = gameDAO.insertGame(game);
 
         AuthData token = new AuthData("totallyRandomAuth", user.username());
-        dataAccess.insertAuth(token);
+        authDAO.insertAuth(token);
 
         ListGamesResponse result = new GameService(dataAccess).listGames(token.authToken());
 
@@ -103,11 +107,11 @@ public class GameServiceTest {
         AuthData token = new AuthData("totallyRandomAuth", user.username());
 
 
-        dataAccess.insertUser(user);
-        dataAccess.insertGame(game1);
-        dataAccess.insertGame(game2);
-        dataAccess.insertGame(game3);
-        dataAccess.insertAuth(token);
+        userDAO.insertUser(user);
+        gameDAO.insertGame(game1);
+        gameDAO.insertGame(game2);
+        gameDAO.insertGame(game3);
+        authDAO.insertAuth(token);
 
 
         ListGamesResponse result = new GameService(dataAccess).listGames(token.authToken());
@@ -122,7 +126,7 @@ public class GameServiceTest {
 
         AuthData token = new AuthData("totallyRandomAuth", "testusername");
 
-        dataAccess.insertAuth(token);
+        authDAO.insertAuth(token);
 
         ListGamesResponse result = new GameService(dataAccess).listGames(token.authToken());
 
@@ -143,20 +147,20 @@ public class GameServiceTest {
 
         UserData user = new UserData("sheila", "superSecurePa$$w0rd", "noreply@byu.edu");
 
-        dataAccess.insertUser(user);
+        userDAO.insertUser(user);
 
         GameData game = new GameData(0, null, null, "Really Cool Name", new ChessGame());
-        game = dataAccess.insertGame(game);
+        game = gameDAO.insertGame(game);
 
         AuthData token = new AuthData("totallyRandomAuth", user.username());
-        dataAccess.insertAuth(token);
+        authDAO.insertAuth(token);
 
 
         JoinGameRequest request = new JoinGameRequest(ChessGame.TeamColor.WHITE, game.gameID());
 
         Assertions.assertDoesNotThrow(() -> new GameService(dataAccess).joinGame(request, token.authToken()));
 
-        GameData foundGameData = dataAccess.findGame(game.gameID());
+        GameData foundGameData = gameDAO.findGame(game.gameID());
 
         Assertions.assertEquals(game.gameName(), foundGameData.gameName());
         Assertions.assertEquals(game.gameID(), foundGameData.gameID());
