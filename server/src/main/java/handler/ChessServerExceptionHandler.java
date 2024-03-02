@@ -5,6 +5,8 @@ import spark.ExceptionHandler;
 import spark.Request;
 import spark.Response;
 
+import java.util.Map;
+
 
 /**
  * Handles Exceptions thrown from the server
@@ -26,15 +28,8 @@ public class ChessServerExceptionHandler<T extends Exception> implements Excepti
 
     @Override
     public void handle(T t, Request request, Response response) {
-        if(t.getCause() != null) t.printStackTrace();
+        if (t.getCause() != null) t.printStackTrace();
         response.status(responseCode);
-
-        Result result = new Result(t.getMessage());
-
-        response.body(new Gson().toJson(result));
+        response.body(new Gson().toJson(Map.of("message", t.getMessage())));
     }
-
-    private static record Result(String message) {}
-
-
 }
