@@ -3,6 +3,7 @@ package dataAccess.mysql;
 import chess.ChessGame;
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
+import dataAccess.DatabaseManager;
 
 import java.sql.*;
 
