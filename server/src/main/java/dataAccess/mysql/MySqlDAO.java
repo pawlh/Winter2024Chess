@@ -60,29 +60,6 @@ public abstract class MySqlDAO {
     }
 
 
-    private final String[] createStatements = {"""
-            CREATE TABLE IF NOT EXISTS `auth` (
-                `authToken` VARCHAR(64) NOT NULL PRIMARY KEY,
-                `username` VARCHAR(64) NOT NULL
-            )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-            """, """
-            CREATE TABLE IF NOT EXISTS `game` (
-                `gameID` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-                `gameName` VARCHAR(64) NOT NULL UNIQUE,
-                `whiteUsername` VARCHAR(64),
-                `blackUsername` VARCHAR(64),
-                `game` LONGTEXT NOT NULL
-            )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-            """, """
-            CREATE TABLE IF NOT EXISTS `user` (
-                `username` VARCHAR(64) NOT NULL PRIMARY KEY,
-                `password` VARCHAR(64) NOT NULL,
-                `email` VARCHAR(64) NOT NULL
-            )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-            
-            """};
-
-
     protected void configureDatabase() throws DataAccessException {
         if(!configured) {
             DatabaseManager.createDatabase();
