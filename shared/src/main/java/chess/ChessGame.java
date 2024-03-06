@@ -22,7 +22,7 @@ public class ChessGame {
 
     boolean active;
 
-    private transient final List<ExtraRuleset> extraRules = List.of(new CastlingRules(this), new EnPassantRules());
+    private transient final List<ExtraRuleset> extraRules = List.of();
 
 
     public ChessGame() {
