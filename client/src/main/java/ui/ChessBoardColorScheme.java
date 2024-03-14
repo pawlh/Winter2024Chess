@@ -9,7 +9,7 @@ public class ChessBoardColorScheme {
         WHITE_PIECE, BLACK_PIECE
     }
 
-    public static final ChessBoardColorScheme[] schemes =
+    public static final ChessBoardColorScheme[] COLOR_SCHEMES =
             {new ChessBoardColorScheme(37, 0.46f, 0.6f, 0.12f, 0.39f, 0.495f, 0.88f, 0.12f),
                     new ChessBoardColorScheme(208, 0.56f, 0.52f, 0.15f, 0.43f, 0.55f, 0.88f, 0.14f),
                     new ChessBoardColorScheme(265, 0.6f, 0.5f, 0.15f, 0.55f, 0.64f, 0.88f, 0.12f),
