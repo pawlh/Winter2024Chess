@@ -1,12 +1,9 @@
 package data;
 
-import ui.LoginUI;
-import ui.MainUI;
-import ui.UI;
+import ui.LoginUserInterface;
+import ui.MainUserInterface;
+import ui.UserInterface;
 import web.ServerFacade;
-
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
 
 public class DataCache {
     private static DataCache instance = new DataCache();
@@ -29,7 +26,7 @@ public class DataCache {
 
     private ServerFacade facade;
 
-    private UI ui = new LoginUI();
+    private UserInterface userInterface = new LoginUserInterface();
 
     private State state;
 
@@ -71,8 +68,8 @@ public class DataCache {
 
 
 
-    public UI getUi() {
-        return ui;
+    public UserInterface getUi() {
+        return userInterface;
     }
 
 
@@ -84,9 +81,9 @@ public class DataCache {
 
     public void setState(State state) {
         this.state = state;
-        ui = switch (state) {
-            case LOGGED_OUT -> new LoginUI();
-            case LOGGED_IN -> new MainUI();
+        userInterface = switch (state) {
+            case LOGGED_OUT -> new LoginUserInterface();
+            case LOGGED_IN -> new MainUserInterface();
         };
     }
 
