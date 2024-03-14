@@ -5,10 +5,10 @@ import chess.ChessPiece;
 import chess.ChessPosition;
 
 import java.util.Collection;
-import java.util.Objects;
 
 public class BoardPrinter {
-    public void printGame(ChessGame game, ChessBoardColorScheme colorScheme, ChessGame.TeamColor perspective, Collection<ChessPosition> highlight, Collection<ChessPosition> differences) {
+    public static void printGame(ChessGame game, ChessBoardColorScheme colorScheme, ChessGame.TeamColor perspective,
+                           Collection<ChessPosition> highlight, Collection<ChessPosition> differences) {
         System.out.println();
         printHeader(colorScheme, perspective);
 
@@ -58,6 +58,7 @@ public class BoardPrinter {
             System.out.print(colorScheme.getColorEscapeSequence(ChessBoardColorScheme.ColorType.BORDER));
             System.out.print(" " + row + ' ');
             System.out.print(EscapeSequences.RESET_BG_COLOR);
+            System.out.print(EscapeSequences.RESET_TEXT_COLOR);
             System.out.println();
         }
 
@@ -68,7 +69,7 @@ public class BoardPrinter {
 
 
 
-    private void printHeader(ChessBoardColorScheme colorScheme, ChessGame.TeamColor perspective) {
+    private static void printHeader(ChessBoardColorScheme colorScheme, ChessGame.TeamColor perspective) {
         System.out.print(colorScheme.getColorEscapeSequence(ChessBoardColorScheme.ColorType.BORDER_TEXT));
         System.out.print(colorScheme.getColorEscapeSequence(ChessBoardColorScheme.ColorType.BORDER));
         System.out.print("   ");
