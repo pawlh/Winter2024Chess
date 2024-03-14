@@ -12,7 +12,7 @@ public class Repl {
         System.out.print(DataCache.getInstance().getUi().help());
 
         Scanner scanner = new Scanner(System.in);
-        var result = "";
+        String result = "";
         while (!result.equals("quit")) {
             printPrompt();
             String line = scanner.nextLine();
