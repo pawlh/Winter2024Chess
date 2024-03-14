@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class MainUI implements UI {
+public class MainUserInterface implements UserInterface {
 
     @Override
     public String eval(String cmd, String[] args) {
@@ -75,7 +75,7 @@ public class MainUI implements UI {
         DataCache.getInstance().getFacade().joinGame(request);
         DataCache.getInstance().setGameId(gameID);
 
-        new BoardPrinter().printGame(new ChessGame(), ChessBoardColorScheme.schemes[0], color, List.of(), List.of());
+        new BoardPrinter().printGame(new ChessGame(), ChessBoardColorScheme.COLOR_SCHEMES[0], color, List.of(), List.of());
 
         return "Joined game";
     }
@@ -161,7 +161,7 @@ public class MainUI implements UI {
         DataCache.getInstance().getFacade().joinGame(request);
         DataCache.getInstance().setGameId(gameID);
 
-        new BoardPrinter().printGame(new ChessGame(), ChessBoardColorScheme.schemes[0], ChessGame.TeamColor.WHITE, List.of(), List.of());
+        new BoardPrinter().printGame(new ChessGame(), ChessBoardColorScheme.COLOR_SCHEMES[0], ChessGame.TeamColor.WHITE, List.of(), List.of());
         return "Watching game";
     }
 

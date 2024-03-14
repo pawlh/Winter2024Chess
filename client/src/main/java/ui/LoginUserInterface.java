@@ -1,12 +1,9 @@
 package ui;
 
 import data.DataCache;
-import model.AuthData;
 import model.UserData;
 
-import java.util.Locale;
-
-public class LoginUI implements UI {
+public class LoginUserInterface implements UserInterface {
 
     @Override
     public String eval(String cmd, String[] args) {
