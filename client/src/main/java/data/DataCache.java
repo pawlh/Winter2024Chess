@@ -1,9 +1,15 @@
 package data;
 
-import ui.LoginUserInterface;
-import ui.MainUserInterface;
-import ui.UserInterface;
+import chess.ChessGame;
+import chess.ChessMove;
+import ui.*;
 import web.ServerFacade;
+import web.WebSocketClient;
+import web.WebSocketClientObserver;
+
+import javax.websocket.DeploymentException;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class DataCache {
     private static DataCache instance = new DataCache();
@@ -13,7 +19,7 @@ public class DataCache {
     private DataCache(){}
 
     public enum State {
-        LOGGED_OUT, LOGGED_IN
+        LOGGED_OUT, LOGGED_IN, IN_GAME
     }
 
     private String serverUrl;
@@ -24,20 +30,25 @@ public class DataCache {
 
     private int gameId;
 
+    private ChessGame.TeamColor playerColor;
+
     private ServerFacade facade;
 
     private UserInterface userInterface = new LoginUserInterface();
 
     private State state;
 
+    private ChessBoardColorScheme colorScheme = ChessBoardColorScheme.COLOR_SCHEMES[0];
 
-    static {
-        DataCache.getInstance().setServerUrl("http://localhost:8080");
-    }
+    private ChessGame lastGame;
 
-    public void setServerUrl(String serverUrl) {
-        this.serverUrl = serverUrl;
-        facade = new ServerFacade(serverUrl);
+    private WebSocketClient webSocketClient;
+
+
+    public void setRunOptions(String host, int port, WebSocketClientObserver observer)
+            throws DeploymentException, URISyntaxException, IOException {
+        facade = new ServerFacade("http://%s:%d".formatted(host, port));
+        webSocketClient = new WebSocketClient(observer, host, port);
     }
 
 
@@ -84,6 +95,7 @@ public class DataCache {
         userInterface = switch (state) {
             case LOGGED_OUT -> new LoginUserInterface();
             case LOGGED_IN -> new MainUserInterface();
+            case IN_GAME -> new GameUserInterface();
         };
     }
 
@@ -97,4 +109,31 @@ public class DataCache {
         this.gameId = gameId;
     }
 
+    public ChessGame.TeamColor getPlayerColor() {
+        return playerColor;
+    }
+
+    public void setPlayerColor(ChessGame.TeamColor playerColor) {
+        this.playerColor = playerColor;
+    }
+
+    public ChessBoardColorScheme getColorScheme() {
+        return colorScheme;
+    }
+
+    public void setColorScheme(ChessBoardColorScheme colorScheme) {
+        this.colorScheme = colorScheme;
+    }
+
+    public ChessGame getLastGame() {
+        return lastGame;
+    }
+
+    public void setLastGame(ChessGame lastGame) {
+        this.lastGame = lastGame;
+    }
+
+    public WebSocketClient getWebSocketClient() {
+        return webSocketClient;
+    }
 }
