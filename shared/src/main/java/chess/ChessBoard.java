@@ -112,7 +112,7 @@ public class ChessBoard {
         String[][] toStringArr = new String[8][8];
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
-                toStringArr[i][j] = board[i][j] == null ? "1" : board[i][j].toString();
+                toStringArr[7 - i][j] = board[i][j] == null ? "1" : board[i][j].toString();
             }
         }
 
