@@ -26,7 +26,7 @@ public class Repl implements WebSocketClientObserver {
         System.out.print(DataCache.getInstance().getUi().help());
 
         Scanner scanner = new Scanner(System.in);
-        String result = "";
+        CommandOutput result = new CommandOutput("", true);
         while (!result.equals("quit")) {
             printPrompt();
             String line = scanner.nextLine();
@@ -37,7 +37,9 @@ public class Repl implements WebSocketClientObserver {
 
             try {
                 result = DataCache.getInstance().getUi().eval(cmd, params);
-                System.out.print(EscapeSequences.SET_TEXT_COLOR_BLUE + result);
+                System.out.print(
+                        (result.success() ? EscapeSequences.SET_TEXT_COLOR_BLUE : EscapeSequences.SET_TEXT_COLOR_RED) +
+                                result.output() + EscapeSequences.RESET_TEXT_COLOR);
             } catch (Throwable e) {
                 System.out.print(e.getMessage());
             }

@@ -6,6 +6,7 @@ import model.GameData;
 import model.JoinGameRequest;
 import model.ListGamesResponse;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -13,15 +14,15 @@ import java.util.List;
 public class MainUserInterface implements UserInterface {
 
     @Override
-    public String eval(String cmd, String[] args) {
+    public CommandOutput eval(String cmd, String[] args) {
         return switch (cmd) {
             case "c", "create" -> create(args);
             case "l", "list" -> list();
             case "j", "join" -> join(args);
             case "w", "watch" -> watch(args);
             case "logout" -> logout();
-            case "h", "help" -> help();
-            default -> help();
+            case "h", "help" -> new CommandOutput(help(), true);
+            default -> new CommandOutput(help(), false);
         };
     }
 
@@ -45,47 +46,53 @@ public class MainUserInterface implements UserInterface {
     }
 
 
-    private String create(String[] args) {
-        if (args.length != 1) return "Usage: create <GAME NAME>";
+    private CommandOutput create(String[] args) {
+        if (args.length != 1) return new CommandOutput("Usage: create <GAME NAME>", false);
         GameData request = new GameData(0, null, null, args[0], null);
         GameData response = DataCache.getInstance().getFacade().createGame(request);
 
-        return "Successfully created game " + args[0] + " with game id " + response.gameID();
+        return new CommandOutput("Successfully created game " + args[0] + " with game id " + response.gameID(), true);
     }
 
 
-    private String join(String[] args) {
-        if (args.length != 2) return "Usage: join <GAME ID> <COLOR>";
+    private CommandOutput join(String[] args) {
+        if (args.length != 2) return new CommandOutput("Usage: join <GAME ID> <COLOR>", false);
         ChessGame.TeamColor color;
         try {
             color = ChessGame.TeamColor.valueOf(args[1].toUpperCase());
         } catch (IllegalArgumentException e) {
-            return "Unable to parse " + args[1] + " as a color";
+            return new CommandOutput("Unable to parse " + args[1] + " as a color", false);
         }
 
         int gameID;
         try {
             gameID = Integer.parseInt(args[0]);
         } catch (NumberFormatException e) {
-            return "Unable to parse " + args[0] + " as a game id";
+            return new CommandOutput("Unable to parse " + args[0] + " as a game id", false);
         }
 
 
         JoinGameRequest request = new JoinGameRequest(color, gameID);
         DataCache.getInstance().getFacade().joinGame(request);
         DataCache.getInstance().setGameId(gameID);
+        DataCache.getInstance().setPlayerColor(color);
 
-        new BoardPrinter().printGame(new ChessGame(), ChessBoardColorScheme.COLOR_SCHEMES[0], color, List.of(), List.of());
+        try {
+            DataCache.getInstance().getWebSocketClient().joinPlayer();
+            DataCache.getInstance().setState(DataCache.State.IN_GAME);
+        } catch (IOException e) {
+            return new CommandOutput("Could not join game: " + e.getMessage(), false);
+        }
 
-        return "Joined game";
+        return new CommandOutput("", true);
     }
 
 
-    private String list() {
+    private CommandOutput list() {
         ListGamesResponse result = DataCache.getInstance().getFacade().listGames();
 
         if (result.games().isEmpty()) {
-            return "There are no open games";
+            return new CommandOutput("There are no open games", true);
         }
 
         List<GameData> games = new ArrayList<>(result.games());
@@ -96,7 +103,7 @@ public class MainUserInterface implements UserInterface {
         int longestWhiteUsername = 5;
         int longestBlackUsername = 5;
         for (GameData game : games) {
-            if(String.valueOf(game.gameID()).length() > longestId) longestId = String.valueOf(game.gameID()).length();
+            if (String.valueOf(game.gameID()).length() > longestId) longestId = String.valueOf(game.gameID()).length();
             if (game.gameName().length() > longestName) longestName = game.gameName().length();
             if (game.whiteUsername() != null && game.whiteUsername().length() > longestWhiteUsername)
                 longestWhiteUsername = game.whiteUsername().length();
@@ -136,33 +143,39 @@ public class MainUserInterface implements UserInterface {
             }
             out.append("\n");
         }
-        return out.toString();
+        return new CommandOutput(out.toString(), true);
     }
 
 
-    private String logout() {
+    private CommandOutput logout() {
         DataCache.getInstance().getFacade().logout();
         DataCache.getInstance().setState(DataCache.State.LOGGED_OUT);
-        return "Sucessfully logged out";
+        return new CommandOutput("Sucessfully logged out", true);
     }
 
 
-    private String watch(String[] args) {
-        if (args.length != 1) return "Usage: watch <GAME ID>";
+    private CommandOutput watch(String[] args) {
+        if (args.length != 1) return new CommandOutput("Usage: watch <GAME ID>", false);
 
         int gameID;
         try {
             gameID = Integer.parseInt(args[0]);
         } catch (NumberFormatException e) {
-            return "Unable to parse " + args[0] + " as a game id";
+            return new CommandOutput("Unable to parse " + args[0] + " as a game id", false);
         }
 
         JoinGameRequest request = new JoinGameRequest(null, gameID);
         DataCache.getInstance().getFacade().joinGame(request);
         DataCache.getInstance().setGameId(gameID);
+        DataCache.getInstance().setPlayerColor(null);
 
-        new BoardPrinter().printGame(new ChessGame(), ChessBoardColorScheme.COLOR_SCHEMES[0], ChessGame.TeamColor.WHITE, List.of(), List.of());
-        return "Watching game";
+        try {
+            DataCache.getInstance().getWebSocketClient().joinObserver();
+            DataCache.getInstance().setState(DataCache.State.IN_GAME);
+        } catch (IOException e) {
+            return new CommandOutput("Could not watch game: " + e.getMessage(), false);
+        }
+        return new CommandOutput("", true);
     }
 
 }
