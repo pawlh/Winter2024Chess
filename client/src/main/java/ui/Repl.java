@@ -27,7 +27,7 @@ public class Repl implements WebSocketClientObserver {
 
         Scanner scanner = new Scanner(System.in);
         CommandOutput result = new CommandOutput("", true);
-        while (!result.equals("quit")) {
+        while (!result.output().equals("quit")) {
             printPrompt();
             String line = scanner.nextLine();
 
@@ -44,7 +44,7 @@ public class Repl implements WebSocketClientObserver {
                 System.out.print(e.getMessage());
             }
         }
-        System.out.println();
+        System.out.println(" Thanks for playing!");
     }
 
 
