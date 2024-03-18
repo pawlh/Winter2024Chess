@@ -117,7 +117,21 @@ public class GameUserInterface implements UserInterface {
     }
 
     private CommandOutput colors(String[] args) {
-        return new CommandOutput("Unimplemented", false);
+        if (args.length != 1) return new CommandOutput("colors <color number>", false);
+        try {
+            int newColor = Integer.parseInt(args[0]);
+            if(newColor < 1) {
+                return new CommandOutput("color number cannot be less than 1", false);
+            }
+            int max = ChessBoardColorScheme.COLOR_SCHEMES.length;
+            if(newColor > max) {
+                return new CommandOutput("color number cannot be greater than %d".formatted(max), false);
+            }
+            DataCache.getInstance().setColorScheme(ChessBoardColorScheme.COLOR_SCHEMES[newColor - 1]);
+            return new CommandOutput("Color scheme set to scheme %d".formatted(newColor), true);
+        } catch (NumberFormatException e) {
+            return new CommandOutput("could not parse %s as a number".formatted(args[0]), false);
+        }
     }
 
     private CommandOutput resign() {
