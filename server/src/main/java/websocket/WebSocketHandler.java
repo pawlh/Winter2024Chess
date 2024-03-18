@@ -153,6 +153,11 @@ public class WebSocketHandler {
 
 
     private void makeMove(Session session, UserGameCommand command, String username, GameData game) throws IOException {
+        if(command.getMove() == null) {
+            connectionManager.sendError(session, "Error: Must include a move");
+            return;
+        }
+
         if (!(Objects.equals(game.blackUsername(), username) || Objects.equals(game.whiteUsername(), username))) {
             connectionManager.sendError(session, "Error: You are not a participant in this game");
             return;
