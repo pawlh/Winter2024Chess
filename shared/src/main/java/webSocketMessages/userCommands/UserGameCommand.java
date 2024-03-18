@@ -25,7 +25,7 @@ public class UserGameCommand {
     }
 
     public UserGameCommand(String authToken, int gameID, ChessGame.TeamColor playerColor) {
-        this(CommandType.MAKE_MOVE, authToken, gameID);
+        this(CommandType.JOIN_PLAYER, authToken, gameID);
         this.playerColor = playerColor;
     }
 
