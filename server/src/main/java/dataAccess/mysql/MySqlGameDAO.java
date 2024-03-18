@@ -56,7 +56,7 @@ public class MySqlGameDAO extends MySqlDAO implements GameDAO {
         return new String[]{"""
             CREATE TABLE IF NOT EXISTS `game` (
                 `gameID` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-                `gameName` VARCHAR(64) NOT NULL UNIQUE,
+                `gameName` VARCHAR(64) NOT NULL,
                 `whiteUsername` VARCHAR(64),
                 `blackUsername` VARCHAR(64),
                 `game` LONGTEXT NOT NULL
