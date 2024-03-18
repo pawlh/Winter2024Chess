@@ -1,11 +1,25 @@
 package ui;
 
 import data.DataCache;
+import web.WebSocketClientObserver;
+import webSocketMessages.serverMessages.ServerMessage;
 
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Repl {
+public class Repl implements WebSocketClientObserver {
+
+    @Override
+    public void receiveMessage(ServerMessage message) {
+        switch (message.getServerMessageType()) {
+            case LOAD_GAME -> ((GameUserInterface) DataCache.getInstance().getUi()).printGame(message.getGame());
+            case ERROR -> System.out.println(
+                    EscapeSequences.SET_TEXT_COLOR_RED + message.getErrorMessage() + EscapeSequences.RESET_TEXT_COLOR);
+            case NOTIFICATION -> System.out.println(
+                    EscapeSequences.SET_TEXT_COLOR_MAGENTA + message.getMessage() + EscapeSequences.RESET_TEXT_COLOR);
+        }
+        printPrompt();
+    }
 
     public void run() {
         System.out.println("\uD83D\uDC36 Welcome to Chess. Sign in to start.");
