@@ -6,13 +6,13 @@ import model.UserData;
 public class LoginUserInterface implements UserInterface {
 
     @Override
-    public String eval(String cmd, String[] args) {
+    public CommandOutput eval(String cmd, String[] args) {
         return switch (cmd) {
             case "l", "login" -> login(args);
             case "r", "register" -> register(args);
-            case "q", "quit" -> "quit";
-            case "h", "help" -> help();
-            default -> help();
+            case "q", "quit" -> new CommandOutput("quit", true);
+            case "h", "help" -> new CommandOutput(help(), true);
+            default -> new CommandOutput(help(), false);
         };
     }
 
@@ -35,22 +35,22 @@ public class LoginUserInterface implements UserInterface {
     }
 
 
-    private String login(String[] args) {
-        if(args.length != 2) return "Usage: login <USERNAME> <PASSWORD>";
+    private CommandOutput login(String[] args) {
+        if(args.length != 2) return new CommandOutput("Usage: login <USERNAME> <PASSWORD>", false);
         UserData request = new UserData(args[0], args[1], null);
         DataCache.getInstance().getFacade().login(request);
         DataCache.getInstance().setState(DataCache.State.LOGGED_IN);
-        return "Successfully logged in.";
+        return new CommandOutput("Successfully logged in.", true);
     }
 
 
 
-    private String register(String[] args) {
-        if(args.length != 3) return "Usage: register <USERNAME> <PASSWORD> <EMAIL>";
+    private CommandOutput register(String[] args) {
+        if(args.length != 3) return new CommandOutput("Usage: register <USERNAME> <PASSWORD> <EMAIL>", false);
         UserData request = new UserData(args[0], args[1], args[2]);
         DataCache.getInstance().getFacade().register(request);
         DataCache.getInstance().setState(DataCache.State.LOGGED_IN);
-        return "Successfully registered.";
+        return new CommandOutput("Successfully registered.", true);
     }
 
 }

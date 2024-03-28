@@ -104,7 +104,7 @@ public class WebSocketHandler {
         connectionManager.sendMessage(session, loadGameJson);
 
         ServerMessage notify = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION,
-                "UserData " + username + " is now watching the game");
+                "User " + username + " is now watching the game");
         String notifyJson = gson.toJson(notify);
 
         connectionManager.broadcast(notifyJson, game.gameID(), session);
@@ -132,7 +132,7 @@ public class WebSocketHandler {
         connectionManager.sendMessage(session, loadGameJson);
 
         ServerMessage notify = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION,
-                "UserData " + username + " joined playing color " +
+                "User " + username + " joined playing color " +
                         ((command.getPlayerColor() == ChessGame.TeamColor.WHITE) ? "white" : "black") + ".");
         String notifyJson = gson.toJson(notify);
 
@@ -143,7 +143,7 @@ public class WebSocketHandler {
     private void leave(Session session, String username, GameData game) throws IOException {
         connectionManager.removeSession(game.gameID(), session);
 
-        ServerMessage notify = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION, "UserData " + username +
+        ServerMessage notify = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION, "User " + username +
                 ((Objects.equals(username, game.blackUsername()) || Objects.equals(username, game.whiteUsername())) ?
                         " has left the game" : " is no longer watching"));
         String notifyJson = gson.toJson(notify);
@@ -153,6 +153,11 @@ public class WebSocketHandler {
 
 
     private void makeMove(Session session, UserGameCommand command, String username, GameData game) throws IOException {
+        if(command.getMove() == null) {
+            connectionManager.sendError(session, "Error: Must include a move");
+            return;
+        }
+
         if (!(Objects.equals(game.blackUsername(), username) || Objects.equals(game.whiteUsername(), username))) {
             connectionManager.sendError(session, "Error: You are not a participant in this game");
             return;
